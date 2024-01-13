@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            /* background: url('{{ url_for("static", filename="pexels-pixabay-258154.jpg") }}') no-repeat center center fixed; */
+            background-image: url('/static/pexels-pixabay-258154.jpg');
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Signup</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- <form method="POST" action="{{ url_for('signup') }}"> -->
+                        <form method="POST" action="/signup"></form>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputFirstName">Ad</label>
+                                    <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" placeholder="Ad">
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputLastName">Soyad</label>
+                                    <input type="text" class="form-control" id="inputLastName" placeholder="Soyad">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputEmail">E-posta</label>
+                                <input type="email" class="form-control" id="inputEmail" placeholder="E-posta">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword">Şifre</label>
+                                    <input type="password" class="form-control" id="inputPassword" placeholder="Şifre">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPasswordRepeat">Şifre Tekrar</label>
+                                    <input type="password" class="form-control" id="inputPasswordRepeat" placeholder="Şifre Tekrar">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputDropdown1">Ülke</label>
+                                    <select class="form-control" id="countrySelect">
+                                        <option value="" selected disabled>Ulke</option>
+
+                                        <!-- <option>Seçenek 1</option>
+                                        <option>Seçenek 2</option>
+                                        <option>Seçenek 3</option> -->
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputDropdown2">Şehir</label>
+                                    <select class="form-control" id="citySelect">
+                                        <option value="" selected disabled>Sehir</option>
+                                        <!-- <option>Seçenek A</option>
+                                        <option>Seçenek B</option>
+                                        <option>Seçenek C</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-success btn-block" onclick="signup()">Kayıt Ol</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // function signup() {
+        //     var firstName = document.getElementById("inputFirstName").value.trim();
+        //     var lastName = document.getElementById("inputLastName").value.trim();
+        //     var email = document.getElementById("inputEmail").value.trim();
+        //     var password = document.getElementById("inputPassword").value.trim();
+        //     var passwordRepeat = document.getElementById("inputPasswordRepeat").value.trim();
+        //     var country = document.getElementById("inputDropdown1").value;
+        //     var city = document.getElementById("inputDropdown2").value;
+    
+        //     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        //     if (!emailRegex.test(email)) {
+        //         alert("Invalid email format");
+        //         return;
+        //     }
+    
+        //     //non-alphanumeric character:!,@,$,%,&,?
+        //     var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        //     if (!passwordRegex.test(password)) {
+        //         alert("Password must be at least 8 characters and include 1 number and 1 non-alphanumeric character");
+        //         return;
+        //     }
+    
+        //     if (password !== passwordRepeat) {
+        //         alert("Passwords do not match");
+        //         return;
+        //     }
+    
+        //     if (country === "" || city === "") {
+        //         alert("Please select a country and city");
+        //         return;
+        //     }
+    
+        //     submitForm();
+        // }
+    
+        // function submitForm() {
+        //     var xhr = new XMLHttpRequest();
+        //     var url = "{{ url_for('signup') }}";  // Use the correct route for your Flask app
+        //     var formData = new FormData(document.querySelector('form'));
+
+        //     xhr.open('POST', url, true);
+        //     xhr.onreadystatechange = function () {
+        //         if (xhr.readyState == 4 && xhr.status == 200) {
+        //             // Redirect to the index page upon successful form submission
+        //             window.location.href = '/';
+        //         }
+        //     };
+        //     xhr.send(formData);
+        // }
+
+        function fetchCountry() {
+            const courseSelect = document.getElementById('countrySelect');
+            const url = "https://run.mocky.io/v3/e594996c-3a82-4e67-8255-3ad3ea077fa0";
+            fetch(url).then(async (res) => {
+                const items = await res.json();
+                items.forEach(item => { generateOption(item.id, item.Country, countrySelect) });
+            });
+        }
+
+        function generateOption(value, text, selectDom) {
+            const option = document.createElement("option");
+            option.text = text;
+            option.value = value;
+            selectDom.appendChild(option);
+        }
+
+        window.addEventListener('load', () => {
+            fetchCountry();
+        });
+        //
+        //
+        //
+
+                function fetchCity() {
+            const citySelect = document.getElementById('citySelect');
+            const url = "https://run.mocky.io/v3/db409271-48ec-4db3-a06b-eec41c1b3031";
+            fetch(url).then(async (res) => {
+                const items = await res.json();
+                items.forEach(item => { generateCityOption(item.id, item.city, citySelect) });
+            });
+        }
+
+        function generateCityOption(value, text, selectDom) {
+            const option = document.createElement("option");
+            option.text = text;
+            option.value = value;
+            selectDom.appendChild(option);
+        }
+
+        window.addEventListener('load', () => {
+            fetchCity();
+        });
+
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+   
+    
+</html>

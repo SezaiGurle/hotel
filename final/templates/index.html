@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>hotel</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="">
+        <a class="navbar-brand" href="#"><img src="https://tr.hotels.com/_dms/header/logo.svg?locale=tr_TR&siteid=300000028&2&6f9ec7db" alt="Hotels.com"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+          <form class="form-inline my-2 my-lg-0 ml-auto" >
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="button" id="btn-giris" onclick="openLoginPage()">Giris Yap</button>
+          </form>
+        </div>
+    </nav>
+    <hr class="hr1">
+
+    <form class="form-inline justify-content-center" action="{{ url_for('search') }}" method="POST">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Varıs Noktası" name="city_query">
+        </div>
+        <div class="col-md-2">
+            <input type="date" class="form-control" placeholder="" >
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="Misafir Sayısı" onclick="openGuestForm()">
+        </div>
+        <div class="col-md-2" id="button-ara" >
+            <button class="btn btn-primary" type="submit">Ara</button>
+        </div>
+    </form>
+
+    <!-- <div id="guestForm" style="display: none; position: absolute; top: 50px; left: 50px; padding: 10px; background-color: white; border: 1px solid #ccc;">
+       
+        <div>
+            <label for="adultCount">Yetişkin Sayısı:</label>
+            <button class="btn btn-secondary" onclick="decreaseCount('adult')">-</button>
+            <span id="adultCount">0</span>
+            <button class="btn btn-secondary" onclick="increaseCount('adult')">+</button>
+        </div>
+        <div>
+            <label for="childCount">Çocuk Sayısı:</label>
+            <button class="btn btn-secondary" onclick="decreaseCount('child')">-</button>
+            <span id="childCount">0</span>
+            <button class="btn btn-secondary" onclick="increaseCount('child')">+</button>
+        </div>
+    
+        <button class="btn btn-primary" onclick="closeGuestForm()">Kapat</button>
+    </div> -->
+    
+    <div class="container mt-4">
+        <h2>Bu Hafta  Sonu Tatil Yapın!</h2>
+        <div class="col-md-5">
+            <p>Şu tarih aralığı için fırsatlar gösteriliyor:</p>
+        </div>
+    </div>
+
+    <div class="container mt-6">
+        <div class="row">
+            {% for hotel in hotels %}
+                <div class="col-md-4">
+                    <div class="card" style="width: 15rem;">
+                        <a  onclick="openDetail('{{ hotel[0] }}')">
+                            <img class="card-img-top" src="{{ hotel[11] }}" alt="Card image cap">
+                        </a>            
+                        <div class="card-body">
+                            <p class="card-reting">Hotel Rating: {{ hotel[6] }}</p>
+                            <p class="card-comments">Hotel Comments: {{ hotel[4] }}</p>
+                            <h5 class="card-title">{{ hotel[1] }}</h5>
+                            <p class="card-city"> {{ hotel[9] }}</p>
+                            <p class="card-price"> {{ hotel[2] }} TL</p>
+                            <a href="#" class="btn btn-primary" id="cardButton" onclick="logedUye('{{ hotel[0] }}')">Üye Fiyatı için giriş yapın</a>
+                            <!-- <a href="#" class="btn btn-success" id="cardButton" onclick="viewDetail('{{ hotel[0] }}')">Oteli Görün</a> -->
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    
+    <footer class="footer mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; 2024 - Hotels</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        nav{
+            background-color: #fff;
+        }
+        #button-ara button{
+            border-radius: 20px;
+        }
+        #btn-giris{
+            border-color: #fff;
+        }
+        .hr1{
+            margin-top: 0px;
+        }
+        .btn{
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+// function openGuestForm() {
+//             document.getElementById("guestForm").style.display = "block";
+//         }
+
+//         function closeGuestForm() {
+//             document.getElementById("guestForm").style.display = "none";
+//         }
+//         function increaseCount(type) {
+//         var countElement = document.getElementById(type + 'Count');
+//         var count = parseInt(countElement.innerText);
+//         countElement.innerText = count + 1;
+//     }
+
+//     function decreaseCount(type) {
+//         var countElement = document.getElementById(type + 'Count');
+//         var count = parseInt(countElement.innerText);
+//         if (count > 0) {
+//             countElement.innerText = count - 1;
+//         }
+//     }
+
+        function openLoginPage() {
+        window.location.href = '/login';
+        }
+        function logedUye() {
+            window.location.href = '/login';
+        }
+        function openDetail(hotelId) {
+        window.location.href = '/detail/' + hotelId;
+        }
+        function viewDetail(hotelId) {
+            window.location.href = '/detail/' + hotelId; 
+        }
+        
+        </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
